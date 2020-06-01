@@ -1,0 +1,89 @@
+// Carlos Leon
+// Fixed missing else statements
+// Fixed missing semicolons after third statement in for loops
+
+class ListOfvalues extends Object{
+    nat value;
+    ListOfvalues next;
+}
+
+class ListOfBins extends Object{
+    ListOfBins next;
+    ListOfvalues items;
+    nat id;
+}
+
+main {
+    nat bin;
+    nat val;
+    bool found;
+    ListOfBins current;
+    ListOfBins iter;
+    ListOfBins tempBin;
+    ListOfvalues newValue;
+    ListOfvalues tempValue;
+
+    current = new ListOfBins();
+
+    // Read in pairs
+    for(bin = readNat(); !(bin == 0); bin = readNat();){
+        val = readNat();
+        newValue = new ListOfvalues();
+        newValue.value = val;
+        found = false;
+
+        // Attemp to find bin
+        for(iter = current; !(iter == null) && !found ; iter = iter.next;){
+            if(iter.id == bin){
+                found = true;
+            }
+            else{
+                false;
+            };
+            tempBin = iter;
+        };
+
+        if(found){
+            // Append new item at fron of list
+            tempValue = tempBin.items;
+            tempBin.items = newValue;
+            newValue.next = tempValue;
+        }
+        else{
+            // Create a new bin
+            tempBin = new ListOfBins();
+            tempBin.id = bin;
+            tempBin.items = newValue;
+            tempBin.next = current;
+            current = tempBin;
+        };
+    };
+
+    // Read in bins to output
+    for(bin = readNat(); !(bin == 0); bin = readNat();){
+        found = false;
+
+        // Attempt to find bin
+        for(iter = current; !(iter == null) && !found ; iter = iter.next;){
+            if(iter.id == bin){
+                found = true;
+            }
+            else{
+                false;
+            };
+            tempBin = iter;
+        };
+
+        if(found){
+            val = tempBin.items.value;
+            for(tempValue = tempBin.items.next; !(tempValue.next == null); tempValue = tempValue.next;){
+                val = val * tempValue.value;
+            };
+            printNat(val);
+        }
+        else{
+            printNat(0);
+        };
+    };
+}
+
