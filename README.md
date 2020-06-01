@@ -38,7 +38,15 @@ See example.dj
 
 ### Step 2
 
-Use flex to produce a lexer to tokanize a source program.
-Lexer definition in dj.l
+Use flex to produce a lexer to tokanize a source program. Lexer definition in dj.l.
 
+To run, do the the following. Then do ./dj-flex example.dj to see tokanized output.
+```bash
+flex dj.l
+bison dj.y
+gcc fj.tab.c -o dj-flex
+```
 
+### Step 3
+
+Use YACC to produce a Concrete Syntax Tree from the tokens. YACC produces a LALR parser from a CFG defined in dj.y
