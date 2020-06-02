@@ -29,24 +29,22 @@ main {
 
 ## Process
 
-The making of this compiler was done in 6 steps. Each step allowing us to become familliar with the tools necessary to produce a working compiler.
+The making of this compiler was done in 6 Assignments. Each Assignment allowing us to become familliar with the tools necessary to produce a working compiler.
 
-### Step 1
+### Assignment 1
 
 Write an example fuctionally equivelent DISM and DJ program. This is to be able to compare the resulting compiled code and to familiarize ourself with the language.
 See example.dj
 
-### Step 2
+### Assignment 2
 
-Use flex to produce a lexer to tokanize a source program. Lexer definition in dj.l.
+Use flex to produce a lexer to tokanize a source program. Lexer definition in dj.l. Flex automatically produces fast, efficient DFAs. However, a notable downsize of this lexer definition is that the compiler will exit on this first lexing error.
 
-To run, do the the following. Then do ./dj-flex example.dj to see tokanized output.
+To generate DFA do...
 ```bash
 flex dj.l
-bison dj.y
-gcc fj.tab.c -o dj-flex
 ```
 
-### Step 3
+### Assignment 3 and Assignment 4
 
-Use YACC to produce a Concrete Syntax Tree from the tokens. YACC produces a LALR parser from a CFG defined in dj.y
+In Assignment 3, YACC produces a Concrete Syntax Tree from the tokens from a CFG. Then we augment the outputed LALR parser in Assignment 4 to add actions to built up the Abstract Syntax Tree. 

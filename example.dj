@@ -26,14 +26,14 @@ main {
     current = new ListOfBins();
 
     // Read in pairs
-    for(bin = readNat(); !(bin == 0); bin = readNat();){
+    for(bin = readNat(); !(bin == 0); bin = readNat()){
         val = readNat();
         newValue = new ListOfvalues();
         newValue.value = val;
         found = false;
 
         // Attemp to find bin
-        for(iter = current; !(iter == null) && !found ; iter = iter.next;){
+        for(iter = current; !(iter == null) && !found ; iter = iter.next){
             if(iter.id == bin){
                 found = true;
             }
@@ -60,11 +60,11 @@ main {
     };
 
     // Read in bins to output
-    for(bin = readNat(); !(bin == 0); bin = readNat();){
+    for(bin = readNat(); !(bin == 0); bin = readNat()){
         found = false;
 
         // Attempt to find bin
-        for(iter = current; !(iter == null) && !found ; iter = iter.next;){
+        for(iter = current; !(iter == null) && !found ; iter = iter.next){
             if(iter.id == bin){
                 found = true;
             }
@@ -76,7 +76,7 @@ main {
 
         if(found){
             val = tempBin.items.value;
-            for(tempValue = tempBin.items.next; !(tempValue.next == null); tempValue = tempValue.next;){
+            for(tempValue = tempBin.items.next; !(tempValue.next == null); tempValue = tempValue.next){
                 val = val * tempValue.value;
             };
             printNat(val);
