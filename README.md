@@ -48,3 +48,13 @@ flex dj.l
 ### Assignment 3 and Assignment 4
 
 In Assignment 3, YACC produces a Concrete Syntax Tree from the tokens from a CFG. Then we augment the outputed LALR parser in Assignment 4 to add actions to built up the Abstract Syntax Tree. 
+
+To create the LALR parser do...
+```bash
+bison -v dj.y
+sed -i '/extern YYSTYPE yylval/d' dj.tab.c
+```
+
+### Assignment 5
+
+The AST need to be validated and the symbol table need to be generated. For these steps, the logic needs to be written by hand in C as the logic pertains specifically to the language definition. DJ is a statically programming language meaning that types need to be checked for all expressions. As polymorphism is allowed, objects of a certain type can contain within objects of a parent type i.e. subtypes are allowed.
