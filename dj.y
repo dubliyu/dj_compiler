@@ -7,7 +7,9 @@
 
 %code provides {
   #include "lex.yy.c"
-  #include "ast.c"
+  #include "ast.h"
+  #include "symtbl.h"
+  #include "typecheck.h"
 
   /* Function for printing generic syntax-error messages */
   void yyerror(const char *str) {
@@ -17,8 +19,7 @@
     exit(-1);
   }
 
-    #define CFG_DEBUG 1
-
+    #define CFG_DEBUG 0
     #define YYSTYPE ASTree *
     
     ASTree *pgmAST;
@@ -326,6 +327,9 @@ int main(int argc, char **argv) {
   if(CFG_DEBUG){
     printAST(pgmAST);
   }
+
+  setupSymbolTables(pgmAST);
+  typecheckProgram();
 
   return out;
 }

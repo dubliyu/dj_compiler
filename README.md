@@ -1,5 +1,5 @@
 # DJ Compiler
-## By Carlos Leon for DT.Ligatti's USF Spring Compilers Class
+## By Carlos Leon for Dr. Ligatti's USF Spring Compilers Class
 
 DJ (Diminshed Java) is a limited subset of Java that contains all the elements needed to produce an Object Orientated Language. Designed for teaching purposes, its not a practical language, but within you can find Objects, inheritence and Polymorphism. This compiler takes in DJ and produces DISM (Diminished Instruction Set Machine). A reduced instruction set containing only 12 differnt instructions. This is sufficient to relate to general assembly code without addressing architecture specific instructions and optimizations. A DISM virtual machine made by Dr. Ligatti can be found [here](https://www.cse.usf.edu/~ligatti/compilers-17/as1/dism/). 
 
