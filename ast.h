@@ -106,5 +106,7 @@ ASTree *appendToChildrenList(ASTree *parent, ASTree *newChild);
 /* Print the AST to stdout with indentations marking tree depth. */
 void printAST(ASTree *t);
 
+void printNodeType(ASTree* thisTree);
+
 #endif
 

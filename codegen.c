@@ -42,6 +42,7 @@ DEBUG_COMMENTS 0 or 1, write out degbug comments
 
 #include <stdio.h>
 #include <string.h>
+//#include "ast.h"
 #include "typecheck.h"
 #include "codegen.h"
 
@@ -107,8 +108,8 @@ int GetStaticOffset(ASTree* t, int currentClass){
 }
 int CountFields(int classInt){
 	int ret = 0;
-
-	while(classInt != 0){
+	printf("Counting for %d\n", classInt);
+	while(classInt > 0){
 		ret += classesST[classInt].numVars;
 		classInt = classesST[classInt].superclass;
 	}
@@ -137,7 +138,7 @@ int doesChildOverrideMethod(int parent, int child, int method){
 // Generate Snippets of DISM
 void _log(char* msg){
 	if(DEBUG_COMMENTS){
-		printf("Writting out msg: %s\n", msg);
+		printf("Msg: %s\n", msg);
 		fprintf(f, "mov 0 0; %s\n", msg); 
 	}
 }
@@ -234,6 +235,7 @@ void GetID(int returnVal, int isDot, int classInt, int methodInt, ASTree* t){
 		fprintf(f, "lod 1 6 1\n");
 
 		// Get offset for field of object
+		printf("numClasses = %d, staticnum= %d\n", numClasses, t->staticClassNum);
 		size = t->staticMemberNum + 1 + CountFields(classesST[t->staticClassNum].superclass);
 		//printf("e.id - Offset from  t is %d is for %s\n", size, name);
 		fprintf(f, "mov 2 %d\n", size);
@@ -598,9 +600,9 @@ void codeGenExpr(ASTree *t, int classContainingExpr, int methodContainingExpr){
 	if(t == NULL){
 		printInternalErrorAndQuit("ASTree is NULL", t->lineNumber);
 	}
-	//if(DEBUG_COMMENTS){
-//		printNodeType(t);
-//	}
+	if(DEBUG_COMMENTS){
+		printNodeType(t);
+	}
 
 	// Temporary variables
 	ASTList* li;
@@ -862,6 +864,7 @@ void codeGenExpr(ASTree *t, int classContainingExpr, int methodContainingExpr){
 
 			// Generate code for the init expression, remove results
 			codeGenExpr(t->children->data,c,m);
+			incSP();
 
 			// Generate test expression, and note loop start
 			fprintf(f, "#%d: mov 0 0\n", branch2);
@@ -1031,7 +1034,7 @@ void codeGenExpr(ASTree *t, int classContainingExpr, int methodContainingExpr){
 			// Ok, so Good 31 says that null can be used to access
 			// statics, that makes no sense, but whatever 
 			// I commented it out
-			//checkNullDereference();
+			checkNullDereference();
 
 			GetID(1,1,c,m,t);
 			break;

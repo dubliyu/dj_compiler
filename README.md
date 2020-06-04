@@ -91,3 +91,9 @@ There are at least two symbol tables: one for main locals and one for classes. T
 ### Assignment 6 
 
 With the valid ASTs and the symbol tables we generate DISM code from it. The Virtual machine for DISM has 8 registers; 4 of which are for general purpose use. Specifically R5 is treated as the Heap pointer, R6 as the stack pointer, and R7 as the frame pointer. Static variables are at the bottom of the memory space and the heap follows that growing upward. The stack starts at the top (64k) and grows downward. Since methods can be overwritten in DJ, variable calls first go through a virtual addressing table. Similarlly a instanceOf table is computed for calls to the operation to check subtypes.
+
+
+To Compile the entire dj2dism compiler...
+```bash
+gcc dj.tab.c ast.c symtbl.c typecheck.c codegen.c -o dj2dism 
+```
