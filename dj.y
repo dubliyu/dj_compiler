@@ -10,6 +10,7 @@
   #include "ast.h"
   #include "symtbl.h"
   #include "typecheck.h"
+  #include "codegen.h"
 
   /* Function for printing generic syntax-error messages */
   void yyerror(const char *str) {
@@ -316,12 +317,24 @@ int main(int argc, char **argv) {
     printf("Usage: dj-parse filename\n");
     exit(-1);
   }
+
+  // validate argv[1] as a *.dj
+  int pgmNameLen = strlen(argv[1]);
+  if(pgmNameLen < 4 ||
+      !(argv[1][pgmNameLen-3] == '.' &&
+      argv[1][pgmNameLen-2] == 'd' &&
+      argv[1][pgmNameLen-1] == 'j')){
+    printf("ERROR: filename must be .dj\n");
+    exit(-1);
+  }
+
   yyin = fopen(argv[1],"r");
   if(yyin==NULL) {
     printf("ERROR: could not open file %s\n",argv[1]);
     exit(-1);
   }
-  /* parse the input program */
+
+
   unsigned int out = yyparse();
 
   if(CFG_DEBUG){
@@ -330,6 +343,30 @@ int main(int argc, char **argv) {
 
   setupSymbolTables(pgmAST);
   typecheckProgram();
+
+  // open file to *.dism
+  char* buff = (char*) calloc(pgmNameLen + 2, sizeof(char));
+  for(int i=0; i < pgmNameLen - 1; i++){
+    buff[i] = argv[1][i];
+  }
+  buff[pgmNameLen-1] = 'i';
+  buff[pgmNameLen] = 's';
+  buff[pgmNameLen+1] = 'm';
+  FILE * fp = fopen(buff, "w");
+  if(!fp) {
+    printf("Cant save %s\n", buff);
+    exit(-1);
+  }
+  else{
+    printf("Creating %s\n", buff);
+  }
+
+  // Call generateDISM
+  generateDISM(fp);
+
+  // close file pointer
+  fclose(fp);
+  fclose(yyin);
 
   return out;
 }
