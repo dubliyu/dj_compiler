@@ -47,7 +47,34 @@ flex dj.l
 
 ### Assignment 3 and Assignment 4
 
-In Assignment 3, YACC produces a Concrete Syntax Tree from the tokens from a CFG. Then we augment the outputed LALR parser in Assignment 4 to add actions to built up the Abstract Syntax Tree. 
+In Assignment 3, YACC produces a Concrete Syntax Tree from the tokens from a CFG. Then we augment the outputed LALR parser in Assignment 4 to add actions to built up the Abstract Syntax Tree.
+
+The AST is defined in terms of two mutually recursive C structs.
+
+```C
+// ASTrees contain children in ASTlists
+typedef struct astlistnode {
+  struct astnode *data;
+  struct astlistnode *next;
+} ASTList;
+
+// ASTree
+typedef struct astnode {
+  ASTNodeType typ; // node type
+  ASTList *children; // head
+  ASTList *childrenTail;
+ 
+  unsigned int lineNumber; // in src file
+
+  unsigned int natVal; // in case of nat
+  char *idVal; // variable name
+
+  // Following attributes meant to be used for code generation
+  unsigned int staticClassNum; 
+  unsigned int isMemberStaticVar;
+  unsigned int staticMemberNum;
+} ASTree;
+```  
 
 To create the LALR parser do...
 ```bash
@@ -58,3 +85,9 @@ sed -i '/extern YYSTYPE yylval/d' dj.tab.c
 ### Assignment 5
 
 The AST need to be validated and the symbol table need to be generated. For these steps, the logic needs to be written by hand in C as the logic pertains specifically to the language definition. DJ is a statically programming language meaning that types need to be checked for all expressions. As polymorphism is allowed, objects of a certain type can contain within objects of a parent type i.e. subtypes are allowed.
+
+There are at least two symbol tables: one for main locals and one for classes. The main locals might be empty. But otherwise they contain the variable declerations of main block in the former and the variable, static, and method declerations in the latter. The classes symbol table always at least has the object class type.
+
+### Assignment 6 
+
+With the valid ASTs and the symbol tables we generate DISM code from it. The Virtual machine for DISM has 8 registers; 4 of which are for general purpose use. Specifically R5 is treated as the Heap pointer, R6 as the stack pointer, and R7 as the frame pointer. Static variables are at the bottom of the memory space and the heap follows that growing upward. The stack starts at the top (64k) and grows downward. Since methods can be overwritten in DJ, variable calls first go through a virtual addressing table. Similarlly a instanceOf table is computed for calls to the operation to check subtypes.
